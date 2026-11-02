@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registro de Partos</title>
+    <link rel="icon" href="img/logoF-A.png" type="image/x-icon">
+    <link rel="stylesheet" href="css/style2.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    
+</head>
+<body>
+    <h1>Registro de Partos</h1>
+    <form id="partoForm">
+        <label for="raza">Raza:</label>
+        <select id="raza" name="raza" required>
+            <option value="Cerdo">Cerdo</option>
+            <option value="Borrego">Borrego</option>
+            <option value="Vaca">Vaca</option>
+            <option value="Chivo">Chivo</option>
+        </select>
+
+        <label for="nombreAnimal">Nombre del animal que parió:</label>
+        <input type="text" id="nombreAnimal" name="nombreAnimal" required>
+
+        <label for="totalCrias">Número total de crías:</label>
+        <input type="number" id="totalCrias" name="totalCrias" min="0" required>
+
+        <label for="criasBien">Número de crías que salieron bien:</label>
+        <input type="number" id="criasBien" name="criasBien" min="0" required>
+
+        <label for="criasDetalles">Número de crías con algún detalle o problema:</label>
+        <input type="number" id="criasDetalles" name="criasDetalles" min="0" required>
+
+        <label for="criasMuertas">Número de crías muertas:</label>
+        <input type="number" id="criasMuertas" name="criasMuertas" min="0" required>
+
+        <input type="submit" value="Registrar Parto">
+    </form>
+
+    <canvas id="myChart" width="400" height="200"></canvas>
+
+    <script>
+        const ctx = document.getElementById('myChart').getContext('2d');
+        let myChart;
+
+        document.getElementById('partoForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+
+            const raza = document.getElementById('raza').value;
+            const nombreAnimal = document.getElementById('nombreAnimal').value;
+            const totalCrias = parseInt(document.getElementById('totalCrias').value) || 0;
+            const criasBien = parseInt(document.getElementById('criasBien').value) || 0;
+            const criasDetalles = parseInt(document.getElementById('criasDetalles').value) || 0;
+            const criasMuertas = parseInt(document.getElementById('criasMuertas').value) || 0;
+
+            // Validaciones
+            if (isNaN(totalCrias) || isNaN(criasBien) || isNaN(criasDetalles) || isNaN(criasMuertas)) {
+                alert('Por favor, ingresa valores válidos.');
+                return;
+            }
+
+            if (criasBien + criasDetalles + criasMuertas !== totalCrias) {
+                alert('El total de crías debe coincidir con la suma de las crías bien, con problemas y muertas.');
+                return;
+            }
+
+            // Mostrar gráfica
+            if (myChart) {
+                myChart.destroy();
+            }
+
+            myChart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: ['Crías Bien', 'Con Problemas', 'Muertas'],
+                    datasets: [{
+                        label: `Datos de ${nombreAnimal} (${raza})`,
+                        data: [criasBien, criasDetalles, criasMuertas],
+                        backgroundColor: [
+                            'rgba(40, 167, 69, 0.5)', // Verde
+                            'rgba(255, 193, 7, 0.5)', // Amarillo
+                            'rgba(220, 53, 69, 0.5)'  // Rojo
+                        ],
+                        borderColor: [
+                            'rgba(40, 167, 69, 1)',
+                            'rgba(255, 193, 7, 1)',
+                            'rgba(220, 53, 69, 1)'
+                        ],
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    }
+                }
+            });
+
+            alert('Registro guardado');
+            this.reset();
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,252 @@
+.login-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.8);
+    padding: 20px;
+    box-sizing: border-box;
+}
+
+/* Caja de login estilo oscuro */
+.login-box {
+    background-color: #1e1e1e;
+    border-radius: 10px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.5);
+    padding: 20px;
+    width: 100%;
+    max-width: 350px;
+    color: #ffffff;
+}
+
+/* Logo circular */
+.login-logo {
+    background-color: #e74c3c;
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0 auto 20px;
+}
+
+.login-logo span {
+    font-size: 30px;
+    color: white;
+    font-weight: bold;
+}
+
+h2 {
+    margin-top: 0;
+    font-size: 24px;
+    color: #ffffff;
+    text-align: center;
+}
+
+label {
+    display: block;
+    margin: 10px 0 5px;
+    color: #ffffff;
+}
+
+input[type="text"], input[type="password"], input[type="email"] {
+    width: 100%;
+    padding: 10px;
+    margin: 5px 0 15px;
+    border: none;
+    border-radius: 5px;
+    background-color: #333333;
+    color: #ffffff;
+    box-sizing: border-box;
+}
+
+input[type="text"]:focus, input[type="password"]:focus, input[type="email"]:focus {
+    outline: none;
+    border: 2px solid #e74c3c;
+}
+
+button {
+    background-color: #e74c3c;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    cursor: pointer;
+    border-radius: 5px;
+    width: 100%;
+    font-size: 16px;
+    transition: background-color 0.3s, transform 0.3s;
+}
+
+button:hover {
+    background-color: #c0392b;
+    transform: scale(1.05);
+}
+
+p {
+    text-align: center;
+    margin-top: 10px;
+}
+
+a {
+    color: #e74c3c;
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Arial', sans-serif;
+    background-image: url('fondologin.gif');
+    background-size: cover;
+    background-position: center;
+}
+
+/* Configuración general */
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    min-height: 100vh;
+    font-family: Arial, sans-serif;
+    background-image: url('../img/fondologin.gif');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    color: #fff;
+}
+
+/* Contenedor principal */
+.login-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    padding: 30px 20px;
+    background-color: rgba(0, 0, 0, 0.8);
+}
+
+/* Cajas de inicio de sesión y registro */
+.login-box,
+.register-box {
+    width: 100%;
+    max-width: 380px;
+    padding: 30px;
+    background-color: #1e1e1e;
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+    color: #fff;
+}
+
+/* Títulos */
+.login-box h2,
+.register-box h2 {
+    margin: 0 0 25px;
+    font-size: 24px;
+    text-align: center;
+    color: #fff;
+}
+
+/* Etiquetas */
+.login-box label,
+.register-box label {
+    display: block;
+    margin: 12px 0 6px;
+    color: #eee;
+    font-size: 14px;
+}
+
+/* Campos de texto, contraseña, correo y selector */
+.login-box input[type="text"],
+.login-box input[type="password"],
+.register-box input[type="text"],
+.register-box input[type="password"],
+.register-box input[type="email"],
+.register-box select {
+    display: block;
+    width: 100%;
+    min-height: 42px;
+    padding: 10px 12px;
+    margin: 0 0 15px;
+    border: 1px solid #484848;
+    border-radius: 6px;
+    background-color: #333;
+    color: #fff;
+    font-size: 14px;
+}
+
+/* Selector de rol */
+.register-box select {
+    cursor: pointer;
+}
+
+/* Efecto al seleccionar un campo */
+.login-box input:focus,
+.register-box input:focus,
+.register-box select:focus {
+    outline: none;
+    border-color: #e74c3c;
+    box-shadow: 0 0 0 2px rgba(231, 76, 60, 0.2);
+}
+
+/* Botones */
+.login-box button,
+.register-box button {
+    display: block;
+    width: 100%;
+    padding: 12px;
+    margin-top: 8px;
+    border: none;
+    border-radius: 6px;
+    background-color: #e74c3c;
+    color: #fff;
+    font-size: 15px;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+.login-box button:hover,
+.register-box button:hover {
+    background-color: #c0392b;
+}
+
+/* Texto inferior */
+.login-box p,
+.register-box p {
+    margin: 18px 0 0;
+    text-align: center;
+    color: #ddd;
+    font-size: 14px;
+}
+
+/* Enlaces */
+.login-box a,
+.register-box a {
+    color: #ff6657;
+    text-decoration: none;
+}
+
+.login-box a:hover,
+.register-box a:hover {
+    text-decoration: underline;
+}
+
+/* Ajuste para pantallas pequeñas */
+@media (max-width: 480px) {
+    .login-container {
+        padding: 20px 15px;
+    }
+
+    .login-box,
+    .register-box {
+        padding: 22px;
+    }
+}

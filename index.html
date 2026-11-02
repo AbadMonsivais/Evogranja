@@ -1,0 +1,717 @@
+<!DOCTYPE html>
+<html lang="es">
+<head> 
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Evogranja</title>
+    <link rel="icon" href="img/logoF-A.png" type="image/x-icon">
+    <link rel="stylesheet" href="css/style.css">
+    <link href="https://cdn.jsdelivr.net/npm/fullcalendar@5.10.1/main.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/fullcalendar@5.10.1/daygrid/main.min.css" rel="stylesheet">
+</head>
+<body>
+    <header class="evogranja-header">
+        <div class="header-brand">
+            <img src="img/logoFi.png" alt="Logo Evogranja" class="logo">
+
+        </div>
+
+        <nav class="menu-container" aria-label="Menú principal">
+            <div class="left-buttons">
+                <a href="#" onclick="showCalendar(); return false;">Calendario</a>
+                <a href="#" onclick="showActiveRecords(); return false;">Registros activos</a>
+                <a href="#" onclick="showPreviousRecords(); return false;">Registros anteriores</a>
+                <a href="php/ventas/ventas.php">Producción y ventas</a>
+                <a href="registro_partos.html">Registrar partos</a>
+            </div>
+
+            <div class="dropdown-container" id="animal-dropdown">
+                <button
+                    type="button"
+                    class="dropdown-button"
+                    id="animal-button"
+                    aria-expanded="false"
+                    aria-controls="animal-menu"
+                    onclick="toggleAnimalMenu()">
+                    Cerdo <span aria-hidden="true">▾</span>
+                </button>
+
+                <div class="dropdown-menu" id="animal-menu">
+                    <a href="#" onclick="selectAnimal('Cerdo'); closeDropdownMenus(); return false;">Cerdo</a>
+                    <a href="#" onclick="selectAnimal('Borrego'); closeDropdownMenus(); return false;">Borrego</a>
+                    <a href="#" onclick="selectAnimal('Vaca'); closeDropdownMenus(); return false;">Vaca</a>
+                    <a href="#" onclick="selectAnimal('Chiva'); closeDropdownMenus(); return false;">Chiva</a>
+                </div>
+            </div>
+
+            <div class="right-buttons">
+                <div class="config-dropdown-container" id="config-dropdown">
+                    <button
+                        type="button"
+                        class="config-button"
+                        id="config-button"
+                        aria-expanded="false"
+                        aria-controls="config-menu"
+                        onclick="toggleConfigMenu()">
+                        <span aria-hidden="true">⚙</span> Configuración <span aria-hidden="true">▾</span>
+                    </button>
+
+                    <div class="config-dropdown-content" id="config-menu">
+                        <button type="button" onclick="toggleDarkMode(); closeDropdownMenus();">
+                            Modo oscuro
+                        </button>
+                        <button type="button" onclick="showNotifications(); closeDropdownMenus();">
+                            Notificaciones
+                        </button>
+                    </div>
+                </div>
+
+                <button type="button" class="help-button" onclick="showHelp()">
+                    Ayuda
+                </button>
+
+                    <div class="profile-container" id="profile-container">
+                <button
+                    type="button"
+                    class="profile-button"
+                    id="profile-button"
+                    aria-expanded="false"
+                    aria-controls="profile-menu"
+                    onclick="toggleProfileMenu(event)"
+                >
+                    <!-- Contenedor único para el avatar / icono -->
+                    <span class="profile-avatar" id="profile-avatar">
+                        <span class="profile-avatar-icon">👤</span>
+                    </span>
+
+                    <span class="profile-username" id="profile-username">
+                        Mi cuenta
+                    </span>
+
+                    <span class="profile-arrow">▾</span>
+                </button>
+
+                <div class="profile-menu" id="profile-menu">
+                    <div class="profile-menu-header">
+                        <strong id="profile-menu-username">Usuario</strong>
+                        <span>Cuenta de Evogranja</span>
+                    </div>
+
+                    <button type="button" id="my-profile-button">
+                        <span>👤</span> Mi perfil
+                    </button>
+
+                    <button type="button" id="account-settings-button">
+                        <span>⚙️</span> Configuración de cuenta
+                    </button>
+
+                    <div class="profile-menu-divider"></div>
+
+                    <button type="button" id="logout-button" class="logout-option">
+                        <span>↪</span> Cerrar sesión
+                    </button>
+                </div>
+            </div>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <div id="calendar-container"></div>
+        <div id="records-container" style="display: none;">
+            <h2 id="records-title"></h2>
+            <button class="action-button search" onclick="searchRecords()">Buscar Registros</button>
+            <button class="action-button" onclick="deleteRecord()">Eliminar Registros</button>
+            <button class="action-button" onclick="window.location.href='php/inventario/inventario.php'">Inventario</button>
+            <table id="records-table">
+                <thead>
+                    <tr>
+                        <th>Nombre</th>
+                        <th>Especie</th>
+                        <th>Raza</th>
+                        <th>Fecha Inseminación</th>
+                        <th>Fecha Parto Estimado</th>
+                        <th>Días Restantes</th>
+                        <th>Semental</th>
+                        <th>Raza del Semental</th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+        </div>
+        <div id="help-modal" class="modal">
+            <div class="modal-content">
+                <span class="close" onclick="closeHelp()">&times;</span>
+                <h2>Tutorial de Uso</h2>
+                <p>A continuación se presenta un breve tutorial sobre cómo usar la página:</p>
+                <ul>
+                    <li><strong>Calendario:</strong> Aquí puedes ver las fechas importantes relacionadas con los animales.</li>
+                    <li><strong>Registros Activos:</strong> Muestra los registros de animales que están actualmente activos.</li>
+                    <li><strong>Registros Anteriores:</strong> Muestra los registros de animales cuyo parto ya ha pasado.</li>
+                    <li><strong>Agregar Nuevo:</strong> Permite añadir nuevos registros de animales a la base de datos.</li>
+                    <li><strong>Configuración:</strong> Puedes activar el modo oscuro desde aquí.</li>
+                    <li><strong>Notificaciones:</strong> Muestra las alertas sobre eventos importantes.</li>
+                </ul>
+            </div>
+        </div>
+        <div id="tip-popup" class="tip-popup">
+            <p id="tip-message"></p>
+            <button id="close-tip" onclick="closeTip()">Cerrar</button>
+        </div>
+        
+        
+    </main>
+    <footer>
+        <button class="add-new-button" onclick="toggleForm()">Agregar nuevo</button>
+        <div id="form-container" class="visible" style="display: none;">
+            <label for="nombre">Nombre:</label> 
+            <input type="text" id="nombre" name="nombre">
+        
+            <label for="especie">Especie:</label>
+            <select id="especie" name="especie">
+                <option value="Cerdo">Cerdo</option>
+                <option value="Borrego">Borrego</option>
+                <option value="Vaca">Vaca</option>
+                <option value="Chiva">Chiva</option>
+            </select>
+        
+            <label for="raza">Raza:</label>
+            <input type="text" id="raza" name="raza">
+        
+            <label for="fecha_inseminacion">Fecha de inseminación:</label>
+            <input type="date" id="fecha_inseminacion" name="fecha_inseminacion">
+        
+            <div id="sementales-container">
+                <label>Sementales:</label>
+                <div class="semental-entry">
+                    <input type="text" class="semental" name="semental" placeholder="Nombre del semental">
+                    <input type="text" class="raza-semental" name="raza-semental" placeholder="Raza del semental">
+                </div>
+            </div>
+
+            <label for="color">Color:</label>
+            <input type="color" id="color" name="color" value="#ff0000">
+        
+            <button type="button" id="add-semental-button">Agregar Semental</button>
+            <button type="button" id="submit-button">Enviar</button>
+        </div>
+        <button class="action-button" onclick="window.location.href='php/historial/historialMedico.php'">Historial Médico</button>
+
+    </footer>
+    <div id="notification-modal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal()">&times;</span>
+            <h2>Notificaciones</h2>
+            <ul id="notification-list"></ul>
+        </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/fullcalendar@5.10.1/main.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/fullcalendar@5.10.1/daygrid/main.min.js"></script>
+    <script src="js/profile.js"></script>
+    <script>
+    let selectedAnimal = 'Cerdo';
+    document.addEventListener('DOMContentLoaded', function() {
+    var calendarEl = document.getElementById('calendar-container');
+    var calendar = new FullCalendar.Calendar(calendarEl, {
+        initialView: 'dayGridMonth',
+        locale: 'es',
+        events: fetchEvents,
+        eventMouseEnter: function(info) {
+            const tooltip = document.createElement('div');
+            tooltip.className = 'tooltip';
+            tooltip.innerHTML = `
+                <strong>${info.event.title}</strong><br>
+                Raza: ${info.event.extendedProps.raza}<br>
+                Sementales: ${info.event.extendedProps.sementales.join(', ')}<br>
+                Fecha de Inseminación: ${info.event.start.toLocaleDateString()}<br>
+                Fecha de Parto Estimado: ${info.event.end ? info.event.end.toLocaleDateString() : 'N/A'}
+            `;
+            document.body.appendChild(tooltip);
+            info.el.tooltip = tooltip;
+            tooltip.style.left = (info.jsEvent.clientX + 15) + 'px';
+            tooltip.style.top = (info.jsEvent.clientY + 15) + 'px';
+        },
+        eventMouseLeave: function(info) {
+            if (info.el.tooltip) {
+                document.body.removeChild(info.el.tooltip);
+                info.el.tooltip = null;
+            }
+        },
+        eventMouseMove: function(info) {
+            if (info.el.tooltip) {
+                const tooltip = info.el.tooltip;
+                const pageX = info.jsEvent.pageX;
+                const pageY = info.jsEvent.pageY;
+                const tooltipWidth = tooltip.offsetWidth;
+                const tooltipHeight = tooltip.offsetHeight;
+                const distance = 15;
+
+                // Check if tooltip is going off the right edge of the screen
+                if (pageX + distance + tooltipWidth > window.innerWidth) {
+                    tooltip.style.left = (pageX - distance - tooltipWidth) + 'px';
+                } else {
+                    tooltip.style.left = (pageX + distance) + 'px';
+                }
+
+                // Check if tooltip is going off the bottom edge of the screen
+                if (pageY + distance + tooltipHeight > window.innerHeight) {
+                    tooltip.style.top = (pageY - distance - tooltipHeight) + 'px';
+                } else {
+                    tooltip.style.top = (pageY + distance) + 'px';
+                }
+            }
+        }    
+    });
+    calendar.render();
+
+    function fetchEvents(fetchInfo, successCallback, failureCallback) {
+            fetch(`php/animales/get_records.php?type=active&especie=${selectedAnimal}`)
+                .then(response => response.json())
+                .then(data => {
+                    const events = data.map(record => {
+                        return {
+                            title: record.nombre,
+                            start: record.fecha_inseminacion,
+                            end: record.fecha_parto_estimado,
+                            backgroundColor: record.color,
+                            borderColor: record.color,
+                            extendedProps: {
+                                raza: record.raza,
+                                sementales: record.sementales.map(s => s.nombre)
+                            }
+                        };
+                    });
+                    successCallback(events);
+                })
+                .catch(error => {
+                    console.error('Error fetching events:', error);
+                    failureCallback(error);
+                });
+        }
+        window.selectAnimal = function(animal) {
+            selectedAnimal = animal;
+
+            document.getElementById('animal-button').innerHTML =
+                `${animal} <span aria-hidden="true">▾</span>`;
+
+            closeDropdownMenus();
+            calendar.refetchEvents();
+        };
+
+    
+            document.getElementById('add-semental-button').addEventListener('click', function() {
+                var container = document.getElementById('sementales-container');
+                var entry = document.createElement('div');
+                entry.className = 'semental-entry';
+                entry.innerHTML = `
+                    <input type="text" class="semental" name="semental" placeholder="Nombre del semental">
+                    <input type="text" class="raza-semental" name="raza-semental" placeholder="Raza del semental">
+                `;
+                container.appendChild(entry);
+                document.getElementById('form-container').style.maxHeight = formContainer.scrollHeight + "px";
+            });
+    
+            document.getElementById('submit-button').addEventListener('click', submitForm);
+    
+            checkForAlarms();
+        });
+    
+        function toggleMenu() {
+            var menuContent = document.getElementById('menu-content');
+            if (menuContent.style.maxHeight) {
+                menuContent.style.maxHeight = null;
+                menuContent.style.opacity = 0;
+                menuContent.style.transform = 'translateY(-20px)';
+            } else {
+                menuContent.style.maxHeight = menuContent.scrollHeight + "px";
+                menuContent.style.opacity = 1;
+                menuContent.style.transform = 'translateY(0)';
+            }
+        }
+    
+        function toggleForm() {
+            var formContainer = document.getElementById('form-container');
+            if (formContainer.style.display === 'block') {
+                formContainer.style.display = 'none';
+                formContainer.style.maxHeight = '0';
+                formContainer.classList.remove('visible');
+            } else {
+                formContainer.style.display = 'block';
+                formContainer.style.maxHeight = formContainer.scrollHeight + 'px';
+                formContainer.classList.add('visible');
+            }
+        }
+    
+        
+            function toggleAnimalMenu() {
+                const menu = document.getElementById('animal-menu');
+                const abrir = !menu.classList.contains('is-open');
+
+                closeDropdownMenus();
+
+                if (abrir) {
+                    menu.classList.add('is-open');
+                    document.getElementById('animal-button')
+                        .setAttribute('aria-expanded', 'true');
+                }
+            }
+
+            function toggleConfigMenu() {
+                const menu = document.getElementById('config-menu');
+                const abrir = !menu.classList.contains('is-open');
+
+                closeDropdownMenus();
+
+                if (abrir) {
+                    menu.classList.add('is-open');
+                    document.getElementById('config-button')
+                        .setAttribute('aria-expanded', 'true');
+                }
+            }
+
+            
+
+            // Registrar estos eventos una sola vez.
+            document.addEventListener('click', function(event) {
+                if (
+                    !event.target.closest('#animal-dropdown') &&
+                    !event.target.closest('#config-dropdown')
+                ) {
+                    
+                }
+            });
+
+            
+
+    
+        function toggleDarkMode() {
+        document.body.classList.toggle('dark-mode');
+            // Guardar el estado actual en el almacenamiento local
+            const isDarkMode = document.body.classList.contains('dark-mode');
+            localStorage.setItem('darkMode', isDarkMode);
+        }
+
+        // Al cargar la página index.html, verificar si estaba activo el modo oscuro
+        document.addEventListener('DOMContentLoaded', function() {
+            if (localStorage.getItem('darkMode') === 'true') {
+                document.body.classList.add('dark-mode');
+            }
+            // ... resto de tu código inicial ...
+        });
+    
+        function showCalendar() {
+            document.getElementById('calendar-container').style.display = 'block';
+            document.getElementById('records-container').style.display = 'none';
+        }
+    
+        function showActiveRecords() {
+            fetchRecords('active');
+        }
+    
+        function showPreviousRecords() {
+            fetchRecords('previous');
+        }
+    
+// Función para cerrar la ventana modal
+    function closeModal() {
+        document.getElementById('notification-modal').style.display = 'none';
+    }
+
+// Verificar fechas de parto estimado al cargar la página y agregar notificaciones
+function showNotifications() {
+    const notificationModal = document.getElementById('notification-modal');
+    const notificationList = document.getElementById('notification-list');
+    notificationList.innerHTML = '';
+
+    const notifications = JSON.parse(localStorage.getItem('notifications')) || [];
+    if (notifications.length > 0) {
+        notifications.forEach(notification => {
+            const listItem = document.createElement('li');
+            listItem.textContent = notification.message;
+            notificationList.appendChild(listItem);
+        });
+    } else {
+        const noNotificationsMessage = document.createElement('p');
+        noNotificationsMessage.textContent = 'No hay notificaciones';
+        noNotificationsMessage.style.textAlign = 'center';
+        notificationList.appendChild(noNotificationsMessage);
+    }
+
+    notificationModal.style.display = 'block';
+}
+
+
+// Función para agregar una notificación
+function addNotification(message) {
+    const notifications = JSON.parse(localStorage.getItem('notifications')) || [];
+    notifications.push({ message });
+    localStorage.setItem('notifications', JSON.stringify(notifications));
+}
+    
+function fetchRecords(type) {
+    fetch(`php/animales/get_records.php?type=${type}`)
+        .then(response => response.json())
+        .then(data => {
+            const recordsContainer = document.getElementById('records-container');
+            const recordsTable = document.getElementById('records-table').getElementsByTagName('tbody')[0];
+            const recordsTitle = document.getElementById('records-title');
+            recordsTable.innerHTML = '';
+
+            recordsTitle.innerText = type === 'active' ? 'Registros Activos' : 'Registros Anteriores';
+
+            data.forEach(record => {
+                const row = recordsTable.insertRow();
+                row.insertCell(0).innerText = record.nombre;
+                row.insertCell(1).innerText = record.especie;
+                row.insertCell(2).innerText = record.raza;
+                row.insertCell(3).innerText = record.fecha_inseminacion;
+                row.insertCell(4).innerText = record.fecha_parto_estimado;
+
+                const fechaParto = new Date(record.fecha_parto_estimado);
+                const hoy = new Date();
+                const diferencia = Math.ceil((fechaParto - hoy) / (1000 * 60 * 60 * 24));
+                row.insertCell(5).innerText = diferencia + " días";
+
+                const sementales = record.sementales.map(s => s.nombre).join(', ');
+                const razasSementales = record.sementales.map(s => s.raza).join(', ');
+
+                row.insertCell(6).innerText = sementales;
+                row.insertCell(7).innerText = razasSementales;
+
+                if (type === 'active' && diferencia < 0) {
+                    row.style.backgroundColor = '#ffcccc';
+                } else if (type === 'previous' && diferencia >= 0) {
+                    row.style.backgroundColor = '#ccffcc';
+                }
+            });
+
+            document.getElementById('calendar-container').style.display = 'none';
+            recordsContainer.style.display = 'block';
+        });
+}
+
+    
+        function submitForm() {
+            const nombre = document.getElementById('nombre').value;
+            const especie = document.getElementById('especie').value;
+            const raza = document.getElementById('raza').value;
+            const fechaInseminacion = document.getElementById('fecha_inseminacion').value;
+            const color = document.getElementById('color').value;
+            
+            const diasGestacion = {
+                Cerdo: 114,
+                Borrego: 150,
+                Vaca: 283,
+                Chiva: 150
+            };
+
+            if (!fechaInseminacion) {
+                alert('Selecciona la fecha de inseminación.');
+                return;
+            }
+
+            const fechaPartoEstimado = new Date(fechaInseminacion + 'T12:00:00');
+
+            const dias = diasGestacion[especie] ?? 114;
+            fechaPartoEstimado.setDate(fechaPartoEstimado.getDate() + dias);
+
+            const fechaParto = [
+                fechaPartoEstimado.getFullYear(),
+                String(fechaPartoEstimado.getMonth() + 1).padStart(2, '0'),
+                String(fechaPartoEstimado.getDate()).padStart(2, '0')
+            ].join('-');
+
+    
+            const sementales = [];
+            const sementalInputs = document.getElementsByClassName('semental');
+            const razaInputs = document.getElementsByClassName('raza-semental');
+            for (let i = 0; i < sementalInputs.length; i++) {
+                sementales.push({
+                    nombre: sementalInputs[i].value,
+                    raza: razaInputs[i].value
+                });
+            }
+    
+            const data = {
+                nombre,
+                especie,
+                raza,
+                fecha_inseminacion: fechaInseminacion,
+                fecha_parto_estimado: fechaParto,
+                sementales,
+                color
+            };
+    
+            fetch('php/partos/submit_form.php', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data)
+            })
+            .then(response => response.text())
+            .then(result => {
+                alert(result);
+                toggleForm();
+                checkForAlarms(); // Check for alarms after submitting a new form
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+        }
+    
+        function checkForAlarms() {
+    fetch('php/animales/get_records.php?type=active')
+        .then(response => response.json())
+        .then(data => {
+            const hoy = new Date();
+            let notifications = JSON.parse(localStorage.getItem('notifications')) || [];
+            const newNotifications = [];
+
+            data.forEach(record => {
+                const fechaParto = new Date(record.fecha_parto_estimado);
+                const diferencia = Math.ceil((fechaParto - hoy) / (1000 * 60 * 60 * 24));
+
+                if (diferencia <= 7 && diferencia > 0) {
+                    const message = `Faltan ${diferencia} días para el parto de ${record.nombre}.`;
+                    newNotifications.push({ message });
+                    if (!notifications.some(n => n.message === message)) {
+                        alert(message);
+                    }
+                } else if (diferencia === 0) {
+                    const message = `El animal ${record.nombre} está programado para parir hoy.`;
+                    newNotifications.push({ message });
+                    if (!notifications.some(n => n.message === message)) {
+                        alert(message);
+                    }
+                }
+            });
+
+            notifications = newNotifications;
+            localStorage.setItem('notifications', JSON.stringify(notifications));
+        });
+}
+
+    
+            function searchRecords() {
+    let searchTerm = prompt("Ingrese el nombre del registro a buscar:");
+    if (searchTerm) {
+        let table = document.getElementById("records-table").getElementsByTagName("tbody")[0];
+        let rows = table.getElementsByTagName("tr");
+        for (let i = 0; i < rows.length; i++) {
+            let cells = rows[i].getElementsByTagName("td");
+            if (cells[0].innerText.includes(searchTerm)) {
+                rows[i].style.backgroundColor = "#FFFF00"; // Resalta el registro encontrado
+            } else {
+                rows[i].style.backgroundColor = ""; // Restaura el color original
+            }
+        }
+    }
+}
+
+function showHelp() {
+    document.getElementById('help-modal').style.display = 'block';
+}
+
+function closeHelp() {
+    document.getElementById('help-modal').style.display = 'none';
+}
+
+
+function deleteRecord() {
+    let recordName = prompt("Ingrese el nombre del registro a eliminar:");
+    if (recordName) {
+        if (confirm(`¿Está seguro que desea eliminar el registro "${recordName}"?`)) {
+            fetch(`php/animales/delete_record.php?name=${encodeURIComponent(recordName)}`, {
+                method: 'GET'
+            })
+            .then(response => response.text())
+            .then(result => {
+                alert(result);
+                // Recargar los registros después de la eliminación
+                showActiveRecords();
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+        }
+    }
+}
+document.addEventListener('DOMContentLoaded', function() {
+    const tips = [
+        "Elige cerdas sanas y de buena genética. Evita animales con historial de problemas reproductivos.",
+        "Asegúrate de que la cerda esté en buen estado físico antes de la inseminación. El sobrepeso o el bajo peso pueden afectar la fertilidad.",
+        "Proporciona una dieta balanceada rica en proteínas, vitaminas y minerales.",
+        "Ajusta la cantidad de alimento según el estado corporal y la etapa de la gestación.",
+        "Evita cambios bruscos en la dieta para prevenir estrés y problemas digestivos.",
+        "Mantén un ambiente limpio, seco y bien ventilado.",
+        "Controla la temperatura, evitando extremos que puedan causar estrés térmico.",
+        "Realiza chequeos veterinarios regulares para detectar y tratar problemas de salud a tiempo.",
+        "Mantén un registro detallado de los signos vitales, cambios en el comportamiento y cualquier síntoma inusual.",
+        "Minimiza el manejo y el traslado de la cerda para reducir el estrés.",
+        "Proporciona un ambiente tranquilo y sin ruidos fuertes.",
+        "Asegúrate de que la cerda esté al día con su programa de vacunación y desparasitación.",
+        "Asegura un suministro constante de agua limpia y fresca.",
+        "Asegúrate de que el lugar donde la cerda dará a luz esté limpio y desinfectado.",
+        "Proporciona un área espaciosa y cómoda para la cerda.",
+        "Monitorea a la cerda de cerca durante los días previos al parto para detectar signos de que el parto es inminente (por ejemplo, inquietud, preparación del nido).",
+        "Estar presente o disponible durante el parto para asistir si es necesario, pero interviene solo cuando sea necesario.",
+        "Ten a mano los equipos y suministros necesarios, como guantes esterilizados y lubricantes.",
+        "Asegúrate de que los lechones reciban el calostro de la cerda lo antes posible.",
+        "Mantén a los lechones calientes y secos.",
+        "Monitorea la salud de la cerda después del parto, asegurándote de que se recupere adecuadamente.",
+        "Proporciona una dieta rica en nutrientes para ayudar en su recuperación y producción de leche.",
+        "Vigila de cerca a los lechones para detectar signos de enfermedad o debilidad.",
+        "Documenta todas las etapas del proceso de gestación, incluyendo inseminación, controles de salud, nutrición, fecha de parto estimada y real, y cualquier intervención necesaria.",
+        "Mantente actualizado sobre las mejores prácticas en el manejo de la reproducción porcina a través de la capacitación y consulta con profesionales veterinarios y zootecnistas."
+    ];
+
+    function showRandomTip() {
+        const randomIndex = Math.floor(Math.random() * tips.length);
+        const tipMessage = tips[randomIndex];
+        const tipPopup = document.getElementById('tip-popup');
+        const tipMessageElement = document.getElementById('tip-message');
+
+        tipMessageElement.textContent = tipMessage;
+        tipPopup.style.display = 'block';
+    }
+
+    function closeTip() {
+        const tipPopup = document.getElementById('tip-popup');
+        tipPopup.style.display = 'none';
+    }
+
+    document.getElementById('close-tip').addEventListener('click', closeTip);
+
+    showRandomTip();
+});
+function showProductionSales() {
+    document.getElementById('calendar-container').style.display = 'none';
+    document.getElementById('records-container').style.display = 'none';
+    document.getElementById('production-sales-container').style.display = 'block'; // Este nuevo contenedor mostrará la sección
+}
+function addProduction() {
+    // Lógica para agregar un nuevo registro de producción
+    const date = prompt("Ingrese la fecha de producción:");
+    const quantity = prompt("Ingrese la cantidad de cerdos producidos:");
+    const comment = prompt("Ingrese un comentario (opcional):");
+    
+    const table = document.getElementById('production-table').getElementsByTagName('tbody')[0];
+    const newRow = table.insertRow();
+    newRow.innerHTML = `<td>${date}</td><td>${quantity}</td><td>${comment}</td>`;
+}
+function addSale() {
+    // Lógica para agregar un nuevo registro de venta
+    const date = prompt("Ingrese la fecha de venta:");
+    const quantity = prompt("Ingrese la cantidad de cerdos vendidos:");
+    const price = prompt("Ingrese el precio por cerdo:");
+    const customer = prompt("Ingrese el nombre del cliente:");
+
+    const table = document.getElementById('sales-table').getElementsByTagName('tbody')[0];
+    const newRow = table.insertRow();
+    newRow.innerHTML = `<td>${date}</td><td>${quantity}</td><td>${price}</td><td>${customer}</td>`;
+}
+
+</script>
+</body>
+</html>

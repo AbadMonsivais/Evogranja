@@ -1,0 +1,622 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    background-color: #f7f7f7;
+    transition: background-color 0.5s, color 0.5s;
+}
+
+header {
+    background-color: #00264d;
+    padding: 20px;
+    text-align: center;
+    color: white;
+}
+
+/* Logo centrado en la parte superior */
+.center-logo {
+    margin-bottom: 20px;
+}
+
+.center-logo .logo {
+    width: 200px;
+}
+
+/* =====================================
+   ENCABEZADO PRINCIPAL DE EVOGRANJA
+   ===================================== */
+
+.evogranja-header {
+    background: linear-gradient(135deg, #063b52, #075b65);
+    color: #fff;
+    padding: 28px 32px; /* Más relleno vertical para que el header sea más alto */
+    position: relative;
+    z-index: 100;
+}
+
+.header-brand {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 16px; /* Más espacio entre el logo y el texto */
+    margin-bottom: 24px; /* Más separación con respecto a la barra de botones */
+}
+
+/* Tamaño del logo ampliado */
+.header-brand .logo {
+    width: 295px;  /* Antes era 64px, ahora lucirá mucho más visible */
+    height: 65px;
+    object-fit: contain;
+}
+
+
+
+/* Tipografía de la marca más grande */
+.brand-name {
+    font-size: 34px; /* Antes 25px */
+    font-weight: bold;
+    letter-spacing: 0.5px;
+}
+
+.brand-subtitle {
+    font-size: 15px; /* Antes 12px */
+    color: #c5e7df;
+}
+
+/* Distribución de los menús */
+
+.evogranja-header .menu-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 16px;
+}
+
+.evogranja-header .left-buttons,
+.evogranja-header .right-buttons {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.evogranja-header .menu-container a,
+.evogranja-header .menu-container button {
+    box-sizing: border-box;
+    min-width: 130px;
+    padding: 14px 28px; /* Un poco más de relleno interno */
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 8px;
+    background-color: #126078;
+    color: #fff;
+    font-family: inherit;
+    font-size: 14px; /* Texto ligeramente más grande para mayor legibilidad */
+    font-weight: 600;
+    text-align: center;
+    text-decoration: none;
+    cursor: pointer;
+    transition: background-color 0.2s ease, border-color 0.2s ease;
+}
+
+.evogranja-header .menu-container a:hover,
+.evogranja-header .menu-container button:hover {
+    background-color: #197c85;
+    border-color: rgba(255, 255, 255, 0.5);
+}
+
+/* Contenedores de los desplegables */
+.evogranja-header .dropdown-container,
+.evogranja-header .config-dropdown-container {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+}
+
+/* Menú desplegable base (Oculto por defecto mediante opacidad y visibility) */
+.evogranja-header .dropdown-menu,
+.evogranja-header .config-dropdown-content {
+    display: block;
+    position: absolute;
+    top: calc(100% + 5px);
+    left: 0;
+    min-width: 175px;
+    padding: 6px;
+    background-color: #fff;
+    border: 1px solid #dce7eb;
+    border-radius: 10px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+    z-index: 1000;
+
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    transform: translateY(5px);
+    transition: opacity 0.16s ease, transform 0.16s ease, visibility 0.16s ease;
+}
+
+/* APERTURA CONTROLADA EXCLUSIVAMENTE MEDIANTE CLIC (.is-open) */
+.evogranja-header .dropdown-menu.is-open,
+.evogranja-header .config-dropdown-content.is-open {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+    transform: translateY(0);
+}
+
+/* Opciones de los menús desplegables */
+.evogranja-header .dropdown-menu a,
+.evogranja-header .config-dropdown-content button {
+    display: block;
+    width: 100%;
+    padding: 11px 12px;
+    border: none;
+    border-radius: 6px;
+    background: transparent;
+    color: #23434d;
+    font-size: 13px;
+    font-weight: 500;
+    text-align: left;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.evogranja-header .dropdown-menu a:hover,
+.evogranja-header .config-dropdown-content button:hover {
+    background-color: #e8f5f2;
+    color: #075b65;
+}
+
+/* Estilos de Contenido General y Formularios */
+main {
+    flex-grow: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#calendar-container {
+    width: 100%;
+    height: 100%;
+    padding: 20px;
+}
+
+footer {
+    background-color: #34495e;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+    color: white;
+    transition: background-color 0.5s, color 0.5s;
+}
+
+.add-new-button {
+    background-color: #1abc9c;
+    color: white;
+    border: none;
+    padding: 15px 30px;
+    cursor: pointer;
+    font-size: 18px;
+    margin-bottom: 20px;
+    transition: background-color 0.3s, transform 0.3s;
+}
+
+.add-new-button:hover {
+    background-color: #16a085;
+    transform: scale(1.1);
+}
+
+#form-container {
+    width: 100%;
+    max-width: 600px;
+    padding: 20px;
+    background-color: #ffffff;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    opacity: 0;
+    transform: translateY(-20px);
+    transition: max-height 0.5s, opacity 0.5s, transform 0.5s;
+}
+
+#form-container.visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+#form-container label {
+    display: block;
+    margin: 10px 0 5px;
+    font-size: 14px;
+    color: #333;
+}
+
+#form-container input, #form-container select {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 14px;
+    color: #333;
+}
+
+#form-container .semental-entry {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 10px;
+}
+
+#form-container .semental-entry input {
+    flex: 1;
+}
+
+#add-semental-button, #submit-button {
+    padding: 10px 20px;
+    margin-top: 10px;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+#add-semental-button:hover, #submit-button:hover {
+    background-color: #0056b3;
+}
+
+.dark-mode {
+    background-color: #2c3e50;
+    color: #ecf0f1;
+}
+
+.dark-mode header {
+    background-color: #2c3e50;
+}
+
+.dark-mode footer {
+    background-color: #2c3e50;
+}
+
+.dark-mode .add-new-button {
+    background-color: #16a085;
+}
+
+.dark-mode #form-container {
+    background-color: #34495e;
+}
+
+.dark-mode #form-container input, 
+.dark-mode #form-container select, 
+.dark-mode #form-container button {
+    background-color: #2c3e50;
+    color: #ecf0f1;
+    border-color: #16a085;
+}
+
+.dark-mode #form-container label {
+    color: white;
+}
+
+#records-container {
+    width: 90%;
+    margin: 20px auto;
+    background-color: #ffffff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+#records-title {
+    text-align: center;
+    font-size: 24px;
+    margin-bottom: 20px;
+}
+
+#records-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+#records-table th, #records-table td {
+    border: 1px solid #ddd;
+    padding: 12px;
+    text-align: center;
+}
+
+#records-table th {
+    background-color: #f2f2f2;
+}
+
+#records-table tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+#records-table tr:hover {
+    background-color: #f1f1f1;
+}
+
+.dark-mode #records-container {
+    background-color: #34495e;
+    color: #ecf0f1;
+}
+
+.dark-mode #records-table th {
+    background-color: #2c3e50;
+    color: #ecf0f1;
+}
+
+.dark-mode #records-table td {
+    background-color: #2c3e50;
+    color: #ecf0f1;
+}
+
+/* Modales y Tooltips */
+.tooltip {
+    position: absolute;
+    background-color: #fff;
+    border: 1px solid #ccc;
+    padding: 10px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    z-index: 1000;
+    pointer-events: none;
+    transition: all 0.3s ease;
+}
+
+.dark-mode .tooltip {
+    background-color: #333;
+    color: #fff;
+    border-color: #666;
+}
+
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0,0,0,0.5);
+}
+
+.modal-content {
+    background-color: #fefefe;
+    margin: 15% auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%;
+    max-width: 600px;
+}
+
+body.dark-mode .modal-content {
+    background-color: #333;
+    color: white;
+    border-color: #555;
+}
+
+.close {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.close:hover,
+.close:focus {
+    color: black;
+    text-decoration: none;
+}
+
+.action-button {
+    background-color: #e74c3c;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    cursor: pointer;
+    font-size: 16px;
+    border-radius: 5px;
+    margin: 5px;
+    transition: background-color 0.3s, transform 0.3s;
+}
+
+.action-button.search {
+    background-color: #3498db;
+}
+
+.action-button:hover {
+    background-color: #c0392b;
+    transform: scale(1.1);
+}
+
+.action-button.search:hover {
+    background-color: #2980b9;
+}
+
+.tip-popup {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background-color: #f9f9f9;
+    border: 1px solid #ccc;
+    padding: 15px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+    z-index: 1000;
+    display: none;
+}
+
+.tip-popup p {
+    margin: 0;
+    font-size: 14px;
+}
+
+.tip-popup button {
+    margin-top: 10px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+.tip-popup button:hover {
+    background-color: #0056b3;
+}
+
+body.dark-mode .evogranja-header {
+    background: linear-gradient(135deg, #1d303b, #243f48);
+}
+
+
+/* Perfil de usuario */
+.profile-container {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+}
+
+.profile-button {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 22px;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    border-radius: 12px;
+    background: rgba(255, 255, 255, 0.12);
+    color: white;
+    font: inherit;
+    cursor: pointer;
+    transition: background 0.2s ease;
+}
+
+.profile-button:hover,
+.profile-button[aria-expanded="true"] {
+    background: rgba(255, 255, 255, 0.23);
+}
+
+.profile-avatar {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    background: #e0f2e8;
+    color: #237a50;
+    flex-shrink: 0;
+    overflow: hidden; /* IMPORTANTE: Esto asegura que la foto se mantenga dentro del círculo */
+}
+
+.profile-avatar-icon {
+    font-size: 19px;
+}
+
+.profile-username {
+    max-width: 150px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.profile-arrow {
+    font-size: 14px;
+}
+
+.profile-menu {
+    position: absolute;
+    top: calc(100% + 10px);
+    right: 0;
+    z-index: 1000;
+    width: 245px;
+    padding: 8px;
+    border: 1px solid #e5e7eb;
+    border-radius: 14px;
+    background: #fff;
+    color: #263238;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+    display: none;
+}
+
+.profile-menu.is-open {
+    display: block;
+}
+
+.profile-menu-header {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    padding: 12px;
+    overflow-wrap: anywhere;
+}
+
+.profile-menu-header span {
+    font-size: 12px;
+    color: #6b7280;
+}
+
+.profile-menu button {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    width: 100%;
+    padding: 11px 12px;
+    border: none;
+    border-radius: 8px;
+    background: transparent;
+    color: inherit;
+    text-align: left;
+    font: inherit;
+    cursor: pointer;
+}
+
+.profile-menu button:hover {
+    background: #f1f5f9;
+}
+
+.profile-menu-divider {
+    height: 1px;
+    margin: 5px 0;
+    background: #e5e7eb;
+}
+
+.profile-menu .logout-option {
+    color: #c62828;
+}
+
+/* Perfil en modo oscuro */
+body.dark-mode .profile-menu {
+    background: #1f2937;
+    color: #f9fafb;
+    border-color: #374151;
+}
+
+body.dark-mode .profile-menu-header span {
+    color: #cbd5e1;
+}
+
+body.dark-mode .profile-menu button:hover {
+    background: #374151;
+}
+
+body.dark-mode .profile-menu-divider {
+    background: #374151;
+}
+
+@media (max-width: 700px) {
+    .profile-username {
+        max-width: 90px;
+    }
+
+    .profile-menu {
+        right: 0;
+        width: min(245px, calc(100vw - 30px));
+    }
+}

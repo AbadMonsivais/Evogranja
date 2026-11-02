@@ -1,0 +1,15 @@
+# Credenciales y configuración privada
+.env
+.env.*
+!.env.example
+config/db_connect.php
+
+# Respaldos y bases de datos locales
+*.sql
+*.sqlite
+*.db
+
+# Archivos temporales
+.DS_Store
+Thumbs.db
+.vscode/
